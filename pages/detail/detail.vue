@@ -20,7 +20,7 @@
 				
 				<view class="detail-like">
 					<view class="detail-like-head">喜欢这首歌的人也听</view>
-					<view class="detail-like-item" v-for="(item,index) in songSimi" :key="index">
+					<view class="detail-like-item" v-for="(item,index) in songSimi" :key="index" @tap="handleToDetail(item.id)">
 						<view class="detail-like-img">
 							<image :src="item.album.picUrl" mode=""></image>
 						</view>
@@ -105,7 +105,7 @@
 				});
 				this.isLoading =true;
 				Promise.all([ songDetail(songId) ,songSimi(songId),songComment(songId), songLyric(songId),songUrl(songId) ]).then((res)=>{
-					console.log(res)
+					// console.log(res)
 					if( res[0][1].data.code == '200'){
 						this.songDetail = res[0][1].data.songs[0]; 
 					}
@@ -180,6 +180,11 @@
 			},
 			cancelLyricIndex(){
 				clearInterval(this.timer);
+			},
+			handleToDetail(songId){
+				uni.navigateTo({
+					url: "../detail/detail?songId=" + songId,
+				})
 			}
 		}
 		

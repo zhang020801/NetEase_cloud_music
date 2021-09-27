@@ -308,11 +308,11 @@ var _api = __webpack_require__(/*! ../../common/api.js */ 20); //
 //
 //
 var musichead = function musichead() {__webpack_require__.e(/*! require.ensure | components/musichead/musichead */ "components/musichead/musichead").then((function () {return resolve(__webpack_require__(/*! ../../components/musichead/musichead.vue */ 48));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { songDetail: { al: { picUrl: '' } }, songSimi: [], songComment: [], songLyric: [], lyricIndex: 0, iconPlay: 'icon-zanting', isPlayRotate: true, isLoading: true };}, components: { musichead: musichead }, onLoad: function onLoad(options) {// console.log(options.songId)
-    this.getMusic(options.songId);}, onUnload: function onUnload() {this.cancelLyricIndex();}, onHide: function onHide() {this.cancelLyricIndex();}, methods: { getMusic: function getMusic(songId) {var _this = this;this.$store.commit('NEXT_ID', songId);uni.showLoading({ title: "加载中..." });this.isLoading = true;Promise.all([(0, _api.songDetail)(songId), (0, _api.songSimi)(songId), (0, _api.songComment)(songId), (0, _api.songLyric)(songId), (0, _api.songUrl)(songId)]).then(function (res) {console.log(res);if (res[0][1].data.code == '200') {_this.songDetail = res[0][1].data.songs[0];}if (res[1][1].data.code == '200') {_this.songSimi = res[1][1].data.songs;}if (res[2][1].data.code == '200') {_this.songComment = res[2][1].data.hotComments;}if (res[3][1].data.code == '200') {var lyric = res[3][1].data.lrc.lyric; // console.log(lyric);
+    this.getMusic(options.songId);}, onUnload: function onUnload() {this.cancelLyricIndex();}, onHide: function onHide() {this.cancelLyricIndex();}, methods: { getMusic: function getMusic(songId) {var _this = this;this.$store.commit('NEXT_ID', songId);uni.showLoading({ title: "加载中..." });this.isLoading = true;Promise.all([(0, _api.songDetail)(songId), (0, _api.songSimi)(songId), (0, _api.songComment)(songId), (0, _api.songLyric)(songId), (0, _api.songUrl)(songId)]).then(function (res) {// console.log(res)
+        if (res[0][1].data.code == '200') {_this.songDetail = res[0][1].data.songs[0];}if (res[1][1].data.code == '200') {_this.songSimi = res[1][1].data.songs;}if (res[2][1].data.code == '200') {_this.songComment = res[2][1].data.hotComments;}if (res[3][1].data.code == '200') {var lyric = res[3][1].data.lrc.lyric; // console.log(lyric);
           var re = /\[([^\]]+)\]([^\[]+)/g;var result = [];lyric.replace(re, function ($0, $1, $2) {result.push({ "time": _this.formatTimeToSec($1), "lyric": $2 });}); // console.log(result);
           _this.songLyric = result;}if (res[4][1].data.code == '200') {_this.bgAudioManager = uni.getBackgroundAudioManager();_this.bgAudioManager.title = _this.songDetail.name; // console.log(res[4][1].data)
-          _this.bgAudioManager.src = res[4][1].data.data[0].url || '';_this.listenLyricIndex();_this.bgAudioManager.onPlay(function () {_this.iconPlay = 'icon-zanting';_this.isPlayRotate = true;
-            _this.listenLyricIndex();
+          _this.bgAudioManager.src = res[4][1].data.data[0].url || '';_this.listenLyricIndex();_this.bgAudioManager.onPlay(function () {_this.iconPlay = 'icon-zanting';_this.isPlayRotate = true;_this.listenLyricIndex();
           });
           _this.bgAudioManager.onPause(function () {
             _this.iconPlay = 'icon-bofang';
@@ -357,6 +357,11 @@ var musichead = function musichead() {__webpack_require__.e(/*! require.ensure |
     },
     cancelLyricIndex: function cancelLyricIndex() {
       clearInterval(this.timer);
+    },
+    handleToDetail: function handleToDetail(songId) {
+      uni.navigateTo({
+        url: "../detail/detail?songId=" + songId });
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
